@@ -97,6 +97,7 @@ export default function Home() {
               fontSize: 12,
             }}
             language="xml"
+            readOnly={true}
           />
         {/* <textarea id="output" readOnly value={out}></textarea> */}
       </div>
