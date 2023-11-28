@@ -15,16 +15,15 @@ import xmlFormat from 'xml-formatter'
 import CodeEditor from '@uiw/react-textarea-code-editor'
 
 
-
 export default function Home() {
   const [inp, setInp] = useState('Input XML');
   const [xsl, setXsl] = useState('XSLT document');
   const [out, setOut] = useState('');
 
+  
   // const xslt = new Xslt();
   // const xmlParser = new XmlParser();
-  const parser = new DOMParser();
-
+  
   useEffect(() => {
     // setOut(inp + xsl);
     try {
@@ -32,6 +31,8 @@ export default function Home() {
       //   xmlParser.xmlParse(inp),
       //   xmlParser.xmlParse(xsl)
       // );
+      const parser = new window.DOMParser();
+
       const xslDoc = parser.parseFromString(xsl, 'text/xml');
       const input = parser.parseFromString(inp, 'text/xml');
       const xsltProcessor = new XSLTProcessor();
