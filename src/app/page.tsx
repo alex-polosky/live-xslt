@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import styles from './page.module.css'
 import React, { useEffect, useState } from 'react'
-import { Xslt, XmlParser } from 'xslt-processor'
+// import { Xslt, XmlParser } from 'xslt-processor'
 import xmlFormat from 'xml-formatter'
 // import Editor from 'react-simple-code-editor'
 // // @ts-expect-error
@@ -14,22 +14,30 @@ import xmlFormat from 'xml-formatter'
 // import 'prismjs/themes/prism.css'
 import CodeEditor from '@uiw/react-textarea-code-editor'
 
+
+
 export default function Home() {
   const [inp, setInp] = useState('Input XML');
   const [xsl, setXsl] = useState('XSLT document');
   const [out, setOut] = useState('');
 
-  const xslt = new Xslt();
-  const xmlParser = new XmlParser();
+  // const xslt = new Xslt();
+  // const xmlParser = new XmlParser();
+  const parser = new DOMParser();
 
   useEffect(() => {
     // setOut(inp + xsl);
     try {
-      var out = xslt.xsltProcess(
-        xmlParser.xmlParse(inp),
-        xmlParser.xmlParse(xsl)
-      );
-      setOut(xmlFormat(out));
+      // var output = xslt.xsltProcess(
+      //   xmlParser.xmlParse(inp),
+      //   xmlParser.xmlParse(xsl)
+      // );
+      const xslDoc = parser.parseFromString(xsl, 'text/xml');
+      const input = parser.parseFromString(inp, 'text/xml');
+      const xsltProcessor = new XSLTProcessor();
+      xsltProcessor.importStylesheet(xslDoc);
+      const output = xsltProcessor.transformToDocument(input).documentElement.outerHTML;
+      setOut(xmlFormat(output));
     }
     catch {
       setOut('no valid xml')
